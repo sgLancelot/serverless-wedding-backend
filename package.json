@@ -1,0 +1,11 @@
+{
+  "name": "sls-wedding-backend",
+  "version": "1.0.0",
+  "description": "Backend for peiwen.zhenkai.xyz using Serverless Framework",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "zhenkai",
+  "license": "MIT"
+}
