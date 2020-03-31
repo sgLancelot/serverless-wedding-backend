@@ -1,5 +1,5 @@
 const dynamodb = require('aws-sdk/clients/dynamodb')
-const docClient = new dynamodb.DocumentClient()
+const docClient = new dynamodb.DocumentClient({ convertEmptyValues: true })
 
 const uuid = require('uuid')
 
@@ -10,18 +10,24 @@ module.exports.post = async event => {
   const timestamp = new Date().getTime()
   
   var params = {
-      TableName: tableName,
-      Item: { 
-        id: uuid.v1(),
-        name: data.name, 
-        contact: data.contact, 
-        additional: data.additional,
-        createdAt: timestamp
-      }
+    TableName: tableName,
+    Item: { 
+      id: uuid.v1(),
+      createdAt: timestamp,
+      name: data.name, 
+      contact: data.contact, 
+      rsvp: data.rsvp,
+      diet: data.diet,
+      drive: data.drive,
+      addiGuest: data.addiGuest,
+      addiAdultChild: data.addiAdultChild,
+      addiBaby: data.addiBaby,
+      addiDiet: data.addiDiet
+    }
   }
 
-  const ddbPromise = await docClient.put(params).promise()
-  if (ddbPromise) {
+  try {
+    await docClient.put(params).promise()
     return {
       statusCode: 200,
       headers: {
@@ -30,7 +36,7 @@ module.exports.post = async event => {
       },
       body: 'Successfully posted to DDB!'
     }
-  } else {
+  } catch(exception) {
     return {
       statusCode: 400,
       headers: {
